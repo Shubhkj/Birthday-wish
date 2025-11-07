@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 21st Birthday! 🎉</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .container {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            max-width: 800px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .birthday-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 50px 30px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        .age {
+            font-size: 6em;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+            margin: 20px 0;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .message {
+            font-size: 1.3em;
+            line-height: 1.8;
+            margin: 30px 0;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .special-message {
+            font-size: 1.5em;
+            color: #FFD700;
+            margin: 20px 0;
+            font-style: italic;
+            animation: slideIn 1.5s ease-out;
+        }
+
+        .balloon {
+            position: absolute;
+            width: 50px;
+            height: 70px;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .balloon::before {
+            content: '';
+            position: absolute;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .balloon:nth-child(1) {
+            background: #FF6B9D;
+            left: 10%;
+            top: 20%;
+            animation-delay: 0s;
+        }
+
+        .balloon:nth-child(2) {
+            background: #FEC8D8;
+            left: 20%;
+            top: 60%;
+            animation-delay: 1s;
+        }
+
+        .balloon:nth-child(3) {
+            background: #957DAD;
+            right: 10%;
+            top: 30%;
+            animation-delay: 2s;
+        }
+
+        .balloon:nth-child(4) {
+            background: #D291BC;
+            right: 20%;
+            top: 70%;
+            animation-delay: 1.5s;
+        }
+
+        .balloon:nth-child(5) {
+            background: #FFD700;
+            left: 50%;
+            top: 10%;
+            animation-delay: 0.5s;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #FFD700;
+            animation: confettiFall 3s linear infinite;
+        }
+
+        .confetti:nth-child(2n) {
+            background: #FF6B9D;
+        }
+
+        .confetti:nth-child(3n) {
+            background: #957DAD;
+        }
+
+        .confetti:nth-child(4n) {
+            background: #FEC8D8;
+        }
+
+        .heart {
+            color: #FF6B9D;
+            font-size: 2em;
+            display: inline-block;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 215, 0, 0.5);
+            }
+            50% {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(255, 215, 0, 0.8);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(-5deg);
+            }
+            50% {
+                transform: translateY(-30px) rotate(5deg);
+            }
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            25% {
+                transform: scale(1.2);
+            }
+            50% {
+                transform: scale(1);
+            }
+        }
+
+        .cake {
+            font-size: 4em;
+            margin: 20px 0;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+            .age {
+                font-size: 4em;
+            }
+            .message {
+                font-size: 1.1em;
+            }
+            .special-message {
+                font-size: 1.2em;
+            }
+            .birthday-card {
+                padding: 30px 20px;
+            }
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.3;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Balloons -->
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+
+    <!-- Stars -->
+    <div class="stars" id="stars"></div>
+
+    <!-- Confetti -->
+    <div id="confetti-container"></div>
+
+    <div class="container">
+        <div class="birthday-card">
+            <h1>🎊 Happy Birthday! 🎊</h1>
+            
+            <div class="cake">🎂</div>
+            
+            <div class="age">21</div>
+            
+            <div class="special-message">
+                Welcome to your 21st year! <span class="heart">♥</span>
+            </div>
+            
+            <div class="message">
+                Today marks the beginning of an incredible chapter in your life!<br>
+                May this special day bring you endless joy, unforgettable moments,<br>
+                and all the happiness you deserve.<br><br>
+                
+                Here's to celebrating YOU –<br>
+                your beautiful smile, your amazing spirit,<br>
+                and all the wonderful memories we share.<br><br>
+                
+                Wishing you a year filled with adventure, love, laughter,<br>
+                and dreams come true! <span class="heart">♥</span>
+            </div>
+            
+            <div class="special-message">
+                🌟 Make this year unforgettable! 🌟
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create confetti
+        function createConfetti() {
+            const confettiContainer = document.getElementById('confetti-container');
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                confettiContainer.appendChild(confetti);
+            }
+        }
+
+        // Create stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Initialize
+        window.onload = () => {
+            createConfetti();
+            createStars();
+        };
+    </script>
+</body>
+</html>
