@@ -407,11 +407,11 @@
     <div class="cursor-follower" id="cursor-follower"></div>
 
     <!-- Balloons -->
-    <div class="balloon" data-balloon="1"></div>
-    <div class="balloon" data-balloon="2"></div>
-    <div class="balloon" data-balloon="3"></div>
-    <div class="balloon" data-balloon="4"></div>
-    <div class="balloon" data-balloon="5"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
 
     <!-- Stars -->
     <div class="stars" id="stars"></div>
@@ -596,16 +596,9 @@
             });
 
             // Music button
-            let musicPlaying = false;
             document.getElementById('music-btn').addEventListener('click', function() {
-                if (!musicPlaying) {
-                    this.textContent = '🎵 Stop Music 🎵';
-                    showWishEffect('🎶 Happy Birthday! 🎶');
-                    musicPlaying = true;
-                } else {
-                    this.textContent = '🎵 Play Music 🎵';
-                    musicPlaying = false;
-                }
+                showWishEffect('🎶 Happy Birthday to You! 🎶');
+                createMassiveConfetti();
             });
         }
 
