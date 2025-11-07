@@ -79,6 +79,31 @@
             border-radius: 50%;
             opacity: 0.8;
             animation: float 6s ease-in-out infinite;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .balloon:hover {
+            transform: scale(1.2);
+        }
+
+        .balloon.popped {
+            animation: pop 0.3s forwards;
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(0);
+                opacity: 0;
+            }
         }
 
         .balloon::before {
@@ -230,6 +255,17 @@
             font-size: 4em;
             margin: 20px 0;
             animation: bounce 2s ease-in-out infinite;
+            cursor: pointer;
+            transition: transform 0.2s;
+            user-select: none;
+        }
+
+        .cake:hover {
+            transform: scale(1.1);
+        }
+
+        .cake.blown {
+            animation: none;
         }
 
         @keyframes bounce {
@@ -285,15 +321,97 @@
                 opacity: 1;
             }
         }
+
+        .interactive-btn {
+            background: linear-gradient(135deg, #FF6B9D, #FEC8D8);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 15px 10px;
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.4);
+            transition: all 0.3s;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .interactive-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 107, 157, 0.6);
+        }
+
+        .interactive-btn:active {
+            transform: translateY(0);
+        }
+
+        .button-container {
+            margin-top: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .wish-effect {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3em;
+            color: #FFD700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            animation: wishAnimation 2s forwards;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        @keyframes wishAnimation {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            50% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8) translateY(-100px);
+            }
+        }
+
+        .cursor-follower {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(255, 215, 0, 0.6);
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s;
+            mix-blend-mode: screen;
+        }
+
+        @media (max-width: 768px) {
+            .interactive-btn {
+                font-size: 1em;
+                padding: 12px 24px;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Cursor follower -->
+    <div class="cursor-follower" id="cursor-follower"></div>
+
     <!-- Balloons -->
-    <div class="balloon"></div>
-    <div class="balloon"></div>
-    <div class="balloon"></div>
-    <div class="balloon"></div>
-    <div class="balloon"></div>
+    <div class="balloon" data-balloon="1"></div>
+    <div class="balloon" data-balloon="2"></div>
+    <div class="balloon" data-balloon="3"></div>
+    <div class="balloon" data-balloon="4"></div>
+    <div class="balloon" data-balloon="5"></div>
 
     <!-- Stars -->
     <div class="stars" id="stars"></div>
@@ -305,7 +423,7 @@
         <div class="birthday-card">
             <h1>🎊 Happy Birthday! 🎊</h1>
             
-            <div class="cake">🎂</div>
+            <div class="cake" id="cake" title="Click to blow out the candles!">🎂</div>
             
             <div class="age">21</div>
             
@@ -328,6 +446,12 @@
             
             <div class="special-message">
                 🌟 Make this year unforgettable! 🌟
+            </div>
+
+            <div class="button-container">
+                <button class="interactive-btn" id="wish-btn">✨ Make a Wish ✨</button>
+                <button class="interactive-btn" id="confetti-btn">🎊 More Confetti 🎊</button>
+                <button class="interactive-btn" id="music-btn">🎵 Play Music 🎵</button>
             </div>
         </div>
     </div>
@@ -359,10 +483,155 @@
             }
         }
 
-        // Initialize
+        // Balloon pop interaction
+        function setupBalloonInteraction() {
+            const balloons = document.querySelectorAll('.balloon');
+            balloons.forEach(balloon => {
+                balloon.addEventListener('click', function() {
+                    if (!this.classList.contains('popped')) {
+                        this.classList.add('popped');
+                        createBurstConfetti(this);
+                        setTimeout(() => {
+                            this.remove();
+                        }, 300);
+                    }
+                });
+            });
+        }
+
+        // Create burst of confetti when balloon pops
+        function createBurstConfetti(element) {
+            const rect = element.getBoundingClientRect();
+            const confettiContainer = document.getElementById('confetti-container');
+            
+            for (let i = 0; i < 15; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = rect.left + rect.width / 2 + 'px';
+                confetti.style.top = rect.top + rect.height / 2 + 'px';
+                confetti.style.position = 'fixed';
+                confetti.style.animationDuration = '1s';
+                confettiContainer.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 1000);
+            }
+        }
+
+        // Cake candle blowing interaction
+        function setupCakeInteraction() {
+            const cake = document.getElementById('cake');
+            let candlesLit = true;
+            
+            cake.addEventListener('click', function() {
+                if (candlesLit) {
+                    this.textContent = '🍰';
+                    this.classList.add('blown');
+                    showWishEffect('🎉 Wish Made! 🎉');
+                    createMassiveConfetti();
+                    candlesLit = false;
+                    
+                    setTimeout(() => {
+                        this.textContent = '🎂';
+                        this.classList.remove('blown');
+                        candlesLit = true;
+                    }, 3000);
+                }
+            });
+        }
+
+        // Show wish effect
+        function showWishEffect(text) {
+            const wishEffect = document.createElement('div');
+            wishEffect.className = 'wish-effect';
+            wishEffect.textContent = text;
+            document.body.appendChild(wishEffect);
+            
+            setTimeout(() => wishEffect.remove(), 2000);
+        }
+
+        // Create massive confetti burst
+        function createMassiveConfetti() {
+            const confettiContainer = document.getElementById('confetti-container');
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                confettiContainer.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 4000);
+            }
+        }
+
+        // Cursor follower effect
+        function setupCursorFollower() {
+            const follower = document.getElementById('cursor-follower');
+            
+            document.addEventListener('mousemove', (e) => {
+                follower.style.left = e.clientX - 10 + 'px';
+                follower.style.top = e.clientY - 10 + 'px';
+            });
+        }
+
+        // Button interactions
+        function setupButtons() {
+            // Make a Wish button
+            document.getElementById('wish-btn').addEventListener('click', function() {
+                const wishes = [
+                    '✨ May all your dreams come true! ✨',
+                    '🌟 Wishing you endless happiness! 🌟',
+                    '💫 May this year be magical! 💫',
+                    '🎯 Success is yours this year! 🎯',
+                    '💝 You deserve all the best! 💝'
+                ];
+                const randomWish = wishes[Math.floor(Math.random() * wishes.length)];
+                showWishEffect(randomWish);
+                createMassiveConfetti();
+            });
+
+            // More Confetti button
+            document.getElementById('confetti-btn').addEventListener('click', function() {
+                createMassiveConfetti();
+            });
+
+            // Music button
+            let musicPlaying = false;
+            document.getElementById('music-btn').addEventListener('click', function() {
+                if (!musicPlaying) {
+                    this.textContent = '🎵 Stop Music 🎵';
+                    showWishEffect('🎶 Happy Birthday! 🎶');
+                    musicPlaying = true;
+                } else {
+                    this.textContent = '🎵 Play Music 🎵';
+                    musicPlaying = false;
+                }
+            });
+        }
+
+        // Add sparkle effect on card hover
+        function setupCardInteraction() {
+            const card = document.querySelector('.birthday-card');
+            
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.02)';
+                this.style.transition = 'transform 0.3s';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        }
+
+        // Initialize all interactions
         document.addEventListener('DOMContentLoaded', () => {
             createConfetti();
             createStars();
+            setupBalloonInteraction();
+            setupCakeInteraction();
+            setupCursorFollower();
+            setupButtons();
+            setupCardInteraction();
         });
     </script>
 </body>
