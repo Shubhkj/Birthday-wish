@@ -451,7 +451,6 @@
             <div class="button-container">
                 <button class="interactive-btn" id="wish-btn">✨ Make a Wish ✨</button>
                 <button class="interactive-btn" id="confetti-btn">🎊 More Confetti 🎊</button>
-                <button class="interactive-btn" id="music-btn">🎵 Play Music 🎵</button>
             </div>
         </div>
     </div>
@@ -592,12 +591,6 @@
 
             // More Confetti button
             document.getElementById('confetti-btn').addEventListener('click', function() {
-                createMassiveConfetti();
-            });
-
-            // Music button
-            document.getElementById('music-btn').addEventListener('click', function() {
-                showWishEffect('🎶 Happy Birthday to You! 🎶');
                 createMassiveConfetti();
             });
         }
